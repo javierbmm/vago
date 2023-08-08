@@ -8,7 +8,7 @@ import (
 	"strings"
 	"vago/vago/extractor"
 	"vago/vago/input"
-	"vago/vago/loggers"
+	"vago/vago/log/generator"
 )
 
 func Build(config input.IOPath) {
@@ -17,13 +17,13 @@ func Build(config input.IOPath) {
 		log.Fatal(err)
 	}
 
-	var logger loggers.BuilderLogger
+	var logger generator.GeneratorLogger
 	for _, file := range files {
 		if file.IsDir() {
 			continue
 		}
 
-		logger.Init(file.Name())
+		logger.Init(file.Name(), false, false)
 		logger.Info("Starting page")
 
 		md, err := os.ReadFile(config.InFolder + file.Name())
