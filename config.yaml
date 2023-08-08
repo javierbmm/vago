@@ -1,0 +1,3 @@
+input: "./source/"
+template: "./template/index.html"
+output: "./out/"

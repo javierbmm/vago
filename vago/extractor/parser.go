@@ -8,23 +8,25 @@ import (
 	"html/template"
 )
 
-func ParseMarkdown(md []byte) []byte {
+func ParseMarkdown(md []byte) Out {
 
 	extensions := parser.CommonExtensions
 	p := parser.NewWithExtensions(extensions)
 	doc := p.Parse(md)
 
-	doc = extractAst(doc)
+	doc, out := extractAst(doc)
 
 	htmlFlags := html.CommonFlags
 	opts := html.RendererOptions{Flags: htmlFlags}
 	renderer := html.NewRenderer(opts)
 	result := markdown.Render(doc, renderer)
 
-	return result
+	out.Content = template.HTML(result)
+
+	return out
 }
 
-func extractAst(doc ast.Node) ast.Node {
+func extractAst(doc ast.Node) (ast.Node, Out) {
 	var out Out
 	out.P = append(out.P, "")
 	var tracker ContentTracker
@@ -40,7 +42,7 @@ func extractAst(doc ast.Node) ast.Node {
 		return ast.GoToNext
 	})
 
-	return doc
+	return doc, out
 }
 
 func extractContent(node ast.Node, out *Out, tracker *ContentTracker) bool {
