@@ -18,7 +18,7 @@ func notFound(w http.ResponseWriter, r *http.Request) {
 }
 
 func RouterHandler(fs http.FileSystem) http.Handler {
-	var logger generator.ServerLogger
+	var logger server.ServerLogger
 	logger.Init()
 
 	fileServer := http.FileServer(fs)

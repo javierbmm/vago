@@ -3,11 +3,11 @@ package server
 import (
 	"net/http"
 	"strconv"
-	generator "vago/vago/log/server"
+	"vago/vago/log/server"
 )
 
 func Serve(port int, directory string) {
-	var logger generator.ServerLogger
+	var logger server.ServerLogger
 	logger.Init()
 
 	logger.Info("Starting...")

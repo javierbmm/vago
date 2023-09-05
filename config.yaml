@@ -1,3 +1,7 @@
 input: "./source/"
 template: "./template/index.html"
 output: "./out/"
+
+# Theme:
+styles: "./styles/"
+theme: "./theme.yaml"

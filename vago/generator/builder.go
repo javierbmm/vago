@@ -11,7 +11,12 @@ import (
 	"vago/vago/log/generator"
 )
 
-func Build(config input.IOPath) {
+func Build(config input.IOPath, noLog bool, noTime bool) {
+	buildPages(config, noLog, noTime)
+	buildStyles(config, noLog, noTime)
+}
+
+func buildPages(config input.IOPath, noLog bool, noTime bool) {
 	files, err := os.ReadDir(config.InFolder)
 	if err != nil {
 		log.Fatal(err)
@@ -23,7 +28,7 @@ func Build(config input.IOPath) {
 			continue
 		}
 
-		logger.Init(file.Name(), false, false)
+		logger.Init(file.Name(), noLog, noTime)
 		logger.Info("Starting page")
 
 		md, err := os.ReadFile(config.InFolder + file.Name())
@@ -35,12 +40,32 @@ func Build(config input.IOPath) {
 		out := extractor.ParseMarkdown(md)
 
 		logger.Info("Building HTML output")
-		BuildPage(config.InTemplate, out, config.OutFolder+file.Name())
+		buildPage(config.InTemplate, out, config.OutFolder+file.Name())
 		logger.Info("Page built in output folder %s", config.OutFolder)
 	}
 }
 
-func BuildPage(templ string, content extractor.Out, filename string) {
+func buildStyles(config input.IOPath, noLog bool, noTime bool) {
+	var logger generator.GeneratorLogger
+	theme := input.GetTheme(config.InTheme)
+	styles, err := os.ReadDir(config.StylesFolder)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, style := range styles {
+		if style.IsDir() {
+			continue
+		}
+
+		logger.Init(style.Name(), noLog, noTime)
+		logger.Info("Parsing theme.")
+		buildStyle(config.StylesFolder+style.Name(), theme, config.OutFolder+style.Name())
+		logger.Info("Style built in output folder %s", config.OutFolder)
+	}
+}
+
+func buildPage(templ string, content extractor.Out, filename string) {
 	t := template.Must(template.ParseFiles(templ))
 	filename = changeFileExtension(filename, "html")
 	file := createFile(filename)
@@ -61,6 +86,20 @@ func createFile(filename string) *os.File {
 	}
 
 	return f
+}
+
+func buildStyle(styles string, theme map[string]interface{}, filename string) {
+	t := template.Must(template.ParseFiles(styles))
+	filename = changeFileExtension(filename, "css")
+	file := createFile(filename)
+	err := t.Execute(file, theme)
+	if err != nil {
+		panic(err)
+	}
+
+	if err := file.Close(); err != nil {
+		panic(err)
+	}
 }
 
 func changeFileExtension(filename string, extension string) string {

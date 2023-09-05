@@ -13,6 +13,7 @@ import (
 func Run() {
 	var configFile string
 	var port int
+	var noLog, noTime bool
 
 	app := &cli.App{
 		Name:  "vago",
@@ -30,10 +31,24 @@ func Run() {
 						Usage:       "Load configuration from `FILE`.",
 						Destination: &configFile,
 					},
+					&cli.BoolFlag{
+						Name:        "no-log",
+						Value:       false,
+						Aliases:     []string{"nl"},
+						Usage:       "Don't display logs for every page.",
+						Destination: &noLog,
+					},
+					&cli.BoolFlag{
+						Name:        "no-time",
+						Value:       false,
+						Aliases:     []string{"ct"},
+						Usage:       "Don't display timestamps when logging.",
+						Destination: &noTime,
+					},
 				},
 				Action: func(*cli.Context) error {
 					config := input.ReadYAML(configFile).AsIOPath()
-					generator.Build(config)
+					generator.Build(config, noLog, noTime)
 					return nil
 				},
 			},

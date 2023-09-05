@@ -1,0 +1,5 @@
+section{
+    background-color: {{ .background }};
+    margin: {{ .margin }};
+    padding:  {{ .padding }};
+}
