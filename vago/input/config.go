@@ -6,4 +6,5 @@ type IOPath struct {
 	OutFolder    string
 	StylesFolder string
 	InTheme      string
+	Home         string
 }

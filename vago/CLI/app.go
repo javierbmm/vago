@@ -73,7 +73,7 @@ func Run() {
 				},
 				Action: func(*cli.Context) error {
 					config := input.ReadYAML(configFile).AsIOPath()
-					server.Serve(port, config.OutFolder)
+					server.Serve(port, config)
 					return nil
 				},
 			},

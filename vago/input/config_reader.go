@@ -11,6 +11,7 @@ type ConfigYAML struct {
 	Template string
 	Styles   string
 	Theme    string
+	Home     string
 }
 
 func ReadYAML(filename string) ConfigYAML {
@@ -35,6 +36,7 @@ func (c ConfigYAML) AsIOPath() IOPath {
 		OutFolder:    c.Output,
 		StylesFolder: c.Styles,
 		InTheme:      c.Theme,
+		Home:         c.Home,
 	}
 
 	return iopath

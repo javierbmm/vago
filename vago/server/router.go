@@ -17,7 +17,11 @@ func notFound(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, NotFoundPage)
 }
 
-func RouterHandler(fs http.FileSystem) http.Handler {
+func home(w http.ResponseWriter, r *http.Request, homepath string) {
+	http.ServeFile(w, r, homepath)
+}
+
+func RouterHandler(fs http.FileSystem, homepath string) http.Handler {
 	var logger server.ServerLogger
 	logger.Init()
 
@@ -29,6 +33,13 @@ func RouterHandler(fs http.FileSystem) http.Handler {
 			logger.Warning(err.Error())
 		} else {
 			logger.Log(pagename, requesterIp)
+		}
+
+		if pagename == "/" {
+			// If empty, output home.
+			home(w, r, homepath)
+			logger.Info("Sending home page.")
+			return
 		}
 
 		_, err = fs.Open(pagename) // Do not allow path traversals.
@@ -70,18 +81,3 @@ func getIP(r *http.Request) (string, error) {
 	}
 	return "", fmt.Errorf("No valid IP found")
 }
-
-//func findPage(name string, folder string) os.DirEntry {
-//	files, err := os.ReadDir(folder)
-//	if err != nil {
-//		panic(err)
-//		return nil
-//	}
-//	for _, file := range files {
-//		if file.Name() == name {
-//			return file
-//		}
-//	}
-//
-//	return nil
-//}

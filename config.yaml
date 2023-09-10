@@ -5,3 +5,5 @@ output: "./out/"
 # Theme:
 styles: "./styles/"
 theme: "./theme.yaml"
+
+home: "home.html"
