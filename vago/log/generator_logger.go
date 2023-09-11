@@ -1,4 +1,4 @@
-package generator
+package log
 
 import (
 	"fmt"
@@ -9,19 +9,13 @@ import (
 type GeneratorLogger struct {
 	pagename string
 	logger   *log.Logger
-	prefixer prefixer
+	prefixer generatorPrefixer
 }
-
-const (
-	INFO    = "INFO"
-	ERROR   = "ERROR"
-	WARNING = "WARNING"
-)
 
 func (bl *GeneratorLogger) Init(pagename string, noLog bool, noTime bool) GeneratorLogger {
 	bl.pagename = pagename
 	bl.logger = log.New(os.Stdout, "", 0)
-	bl.prefixer = prefixer{
+	bl.prefixer = generatorPrefixer{
 		NoLog:    noLog,
 		NoTime:   noTime,
 		Pagename: pagename,

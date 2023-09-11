@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"strconv"
 	"vago/vago/input"
-	"vago/vago/log/server"
+	"vago/vago/log"
 )
 
 func Serve(port int, config input.IOPath) {
-	var logger server.ServerLogger
+	var logger log.ServerLogger
 	directory := config.OutFolder
 	homepath := config.OutFolder + config.Home
 	logger.Init()

@@ -7,7 +7,7 @@ import (
 	"os"
 	"path"
 	"strings"
-	"vago/vago/log/server"
+	"vago/vago/log"
 )
 
 const NotFoundPage = "./error/404.html"
@@ -22,7 +22,7 @@ func home(w http.ResponseWriter, r *http.Request, homepath string) {
 }
 
 func RouterHandler(fs http.FileSystem, homepath string) http.Handler {
-	var logger server.ServerLogger
+	var logger log.ServerLogger
 	logger.Init()
 
 	fileServer := http.FileServer(fs)

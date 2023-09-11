@@ -1,14 +1,14 @@
-package server
+package log
 
 import (
 	"fmt"
 	"time"
 )
 
-type prefixer struct {
+type serverPrefixer struct {
 }
 
-func (bp *prefixer) prefix(logLevel string) string {
+func (bp *serverPrefixer) prefix(logLevel string) string {
 	now := time.Now().Format(time.RFC822)
 	return fmt.Sprintf("[%s] %s: ", now, logLevel)
 }

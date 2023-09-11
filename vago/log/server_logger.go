@@ -1,4 +1,4 @@
-package server
+package log
 
 import (
 	"fmt"
@@ -7,19 +7,13 @@ import (
 )
 
 type ServerLogger struct {
-	prefixer prefixer
+	prefixer serverPrefixer
 	logger   *log.Logger
 }
 
-const (
-	INFO    = "INFO"
-	ERROR   = "ERROR"
-	WARNING = "WARNING"
-)
-
 func (bl *ServerLogger) Init() ServerLogger {
 	bl.logger = log.New(os.Stdout, "", 0)
-	bl.prefixer = prefixer{}
+	bl.prefixer = serverPrefixer{}
 
 	return *bl
 }

@@ -5,3 +5,9 @@ type Logger interface {
 	Warning(string, ...any)
 	Error(error, ...any)
 }
+
+const (
+	INFO    = "INFO"
+	ERROR   = "ERROR"
+	WARNING = "WARNING"
+)

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"vago/vago/extractor"
 	"vago/vago/input"
-	"vago/vago/log/generator"
+	log2 "vago/vago/log"
 )
 
 func Build(config input.IOPath, noLog bool, noTime bool) {
@@ -22,7 +22,7 @@ func buildPages(config input.IOPath, noLog bool, noTime bool) {
 		log.Fatal(err)
 	}
 
-	var logger generator.GeneratorLogger
+	var logger log2.GeneratorLogger
 	for _, file := range files {
 		if file.IsDir() {
 			continue
@@ -46,7 +46,7 @@ func buildPages(config input.IOPath, noLog bool, noTime bool) {
 }
 
 func buildStyles(config input.IOPath, noLog bool, noTime bool) {
-	var logger generator.GeneratorLogger
+	var logger log2.GeneratorLogger
 	theme := input.GetTheme(config.InTheme)
 	styles, err := os.ReadDir(config.StylesFolder)
 	if err != nil {

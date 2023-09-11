@@ -1,17 +1,17 @@
-package generator
+package log
 
 import (
 	"fmt"
 	"time"
 )
 
-type prefixer struct {
+type generatorPrefixer struct {
 	NoLog    bool
 	NoTime   bool
 	Pagename string
 }
 
-func (bp *prefixer) prefix(logLevel string) string {
+func (bp *generatorPrefixer) prefix(logLevel string) string {
 	if bp.NoLog {
 		return ""
 	}
